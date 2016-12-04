@@ -20,7 +20,6 @@ class CommentList extends React.Component{
         var commentNode = this.props.comments.map(function (comment,index){
             return <Comment key={'coment-' +index} author={comment.author}>{comment.body}</Comment>
         });
-        console.log(commentNode) ;
         return(
             <div className="comment-list">
                 {commentNode}
@@ -32,55 +31,73 @@ class CommentList extends React.Component{
 
 
 class CommentForm extends React.Component{
+
+    handleSubmit(e){
+
+        e.preventDefault();
+        const author = this.refs.author.getDOMNode().value.trim();
+        const body = this.refs.body.getDOMNode().value.trim();
+        const form = this.refs.form.getDOMNode() ;
+        var comment ={
+            author:author,
+            body:body
+        }
+        this.props.onSubmit(comment);
+        form.reset();
+
+    }
     render(){
         return(
-            <div className="comment-form">
-                CommentForm
-            </div>
+            <form className="comment-form" ref="form" onSubmit={(e)=>{this.handleSubmit(e)} }>
+                <input type="text" placeholder="input name" ref="author"/>
+                <input type="text" placeholder="input comments" ref="body"/>
+                <input type="submit" value="add Comment"></input>
+            </form>
         );
     }
 }
 
-var comments =[
-    {author:"L1",body :"This is my Comments"},
-    {author:"L12",body :"This is my Comments2"},
-    {author:"L13",body :"This is my Comments3"},
-    {author:"L14",body :"This is my Comments4"}
-];
+
 
 class CommentBox extends React.Component{
 
     constructor(props){
         super();
         this.state ={
-            comments :props.commentspro
+            comments :props.commentspro||[]
         }
     }
 
     loadDataFormServer(){
         $.ajax({
-            url:"../src/comment.json",
+            url:this.props.url,
             dataType:"json",
-            success:function(comments){
-                console.log('ajax');
-                console.log(comments);
+            success:(comments) =>{
+                this.setState({comments:comments});
             },
-            error:function(){}
+            error:(xhr,stater,err)=>{
+                console.err(err.toString());
+            }
         });
     }
     componentDidMount(){
-        console.log('ComponentDisMount');
         this.loadDataFormServer();
+    }
+
+    handleComment(comment){
+        const comments = this.state.comments ;
+        comments.unshift(comment) ;
+        this.setState({commments:comments});
     }
     render(){
         return(
             <div className="comment-box">
                 <h1>Comments</h1>
                 <CommentList comments={this.state.comments}/>
-                <CommentForm/>
+                <CommentForm onSubmit={(comment)=> this.handleComment(comment)}/>
             </div>
         );
     }
 }
 
-var box = ReactDOM.render(<CommentBox commentspro={comments}/>,document.getElementById('content'));
+var box = ReactDOM.render(<CommentBox url="../src/comment.json"/>,document.getElementById('content'));

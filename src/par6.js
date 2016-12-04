@@ -2,7 +2,6 @@ class Count extends React.Component{
     constractor(){
         this.state ={count:0}
     }
-
     update(){
         this.setState({
             count: ++ this.state.count
@@ -13,11 +12,11 @@ class Count extends React.Component{
         return (
             <div>
                 <h1>Count</h1>
-                <h3>0</h3>
+                <h3>XXX</h3>
             </div>
         );
     }
 }
 
 
-React.render(<Count />,document.getElementById('content'));
+var count = React.render(<Count name="你好"/>,document.getElementById('content'));

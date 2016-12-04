@@ -4,6 +4,15 @@
 }
 
 
+.coment-author{
+    display: none;
+    color: #cccccc;
+}
+
+.coment-body{
+    color: darkslategrey;;
+}
+
 .comment-list{
     color: #a4ff4a;
 }
@@ -12,4 +21,12 @@
     color: blue;
     text-indent: hanging;
     background-color: #cccccc;
+}
+
+.comment-form input {
+    display: block;
+}
+
+.comment-form input:focus {
+    border:solid 1px darkcyan;
 }
