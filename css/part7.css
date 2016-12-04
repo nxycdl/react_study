@@ -1,0 +1,15 @@
+.comment-box{
+    color:red;
+    font-size: 22px;
+}
+
+
+.comment-list{
+    color: #a4ff4a;
+}
+
+.comment-form{
+    color: blue;
+    text-indent: hanging;
+    background-color: #cccccc;
+}
